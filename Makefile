@@ -96,7 +96,7 @@ define run-in-test-server
 		-v ${GOPATH}/pkg/mod:/go/pkg/mod${VOLUME_MOUNT} \
 		-v ${GOCACHE}:/tmp/go-build-cache${VOLUME_MOUNT} \
 		-v ${HOME}/.kube:/home/user/.kube${VOLUME_MOUNT} \
-		-v /tmp:/tmp${VOLUME_MOUNT} \
+		-v /Users/zero/Workspace/code/myself/argocd-volumes/tmp:/tmp${VOLUME_MOUNT} \
 		-w ${DOCKER_WORKDIR} \
 		-p ${ARGOCD_E2E_APISERVER_PORT}:8080 \
 		-p 4000:4000 \
@@ -477,7 +477,7 @@ clean: clean-debug
 .PHONY: start
 start: test-tools-image
 	docker version
-	$(call run-in-test-server,make ARGOCD_PROCFILE=test/container/Procfile start-local ARGOCD_START=${ARGOCD_START})
+	$(call run-in-test-server,git config --global --add safe.directory /go/src/github.com/argoproj/argo-cd && make ARGOCD_PROCFILE=test/container/Procfile start-local ARGOCD_START=${ARGOCD_START})
 
 # Starts a local instance of ArgoCD
 .PHONY: start-local

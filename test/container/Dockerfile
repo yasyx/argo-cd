@@ -17,7 +17,8 @@ FROM docker.io/bitnami/kubectl:1.27@sha256:670fe3f50d45c0511bb0f2af018e2fc082ac8
 FROM docker.io/library/ubuntu:22.04@sha256:0bced47fffa3361afa981854fcabcd4577cd43cebbb808cea2b1f33a3dd7f508
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN  apt-get update && apt-get install --fix-missing -y \
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list &&   sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN apt-get update && apt-get install --fix-missing -y \
     ca-certificates \
     curl \
     openssh-server \
@@ -114,5 +115,5 @@ RUN useradd -l -u ${UID} -d /home/user -s /bin/bash user && \
     ln -s /opt/yarn-v1.22.19/bin/yarn /usr/local/bin/yarn && \
     ln -s /opt/yarn-v1.22.19/bin/yarnpkg /usr/local/bin/yarnpkg && \
     mkdir -p /var/lib/registry
-
+RUN mkdir -p /tmp/_argocd-repo && chown user:user /tmp/_argocd-repo && chmod -R 777 /tmp/_argocd-repo
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
